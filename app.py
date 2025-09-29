@@ -98,7 +98,7 @@ if uploaded_file is not None:
     no_bg = remove(cv_image)
 
     # Create white background
-    white_bg = Image.new("RGB", no_bg.size, (255, 255, 255))  
+    white_bg = Image.new("RGB", no_bg.shape, (255, 255, 255))  
     white_bg.paste(no_bg, (0, 0), no_bg)
     white_bg=cv.resize(white_bg,(height,width))
     st.image(white_bg, caption="Processed")
