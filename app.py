@@ -22,10 +22,10 @@ if uploaded_file is not None:
 
     # Decode the image as OpenCV format
     cv_image = cv.imdecode(file_bytes, cv.IMREAD_COLOR)
-    with st.form("example_form"):
-        height  = st.number_input("height",min_value=100, key="height")
-        width = st.number_input("width", min_value=100, key="width")
-        submit = st.form_submit_button("Done")
+    # with st.form("example_form"):
+    height  = st.number_input("height",min_value=100, key="height")
+    width = st.number_input("width", min_value=100, key="width")
+    # submit = st.form_submit_button("Done")
     cv_image=cv.resize(cv_image,(height,width))
     # Display with Streamlit (convert BGR to RGB for correct colors)
     st.subheader("uploaded Image")
@@ -34,8 +34,9 @@ if uploaded_file is not None:
     t1 = st.slider("Threshold1", 50, 200, 100)
     t2 = st.slider("Threshold2", 50, 300, 200)
     edges = cv.Canny(cv_image,t1,t2)
+    cv.resize(edges,(height,width))
     edges=cv.resize(edges,(height,width))
-    st.image(edges)
+    st.image(edges,caption="Canny Image")
 
     if edges is not None:
         download_format = st.radio(
@@ -64,6 +65,7 @@ if uploaded_file is not None:
     st.header(' Blur my image using Gaussian Blur')
     ksize = st.slider("Kernel Size", 1, 21, 5, step=2)
     Blur_img = cv.GaussianBlur(cv_image, (ksize, ksize), 0)
+    Blur_img=cv.resize(Blur_img,(height,width))
     st.image(cv.cvtColor(Blur_img, cv.COLOR_BGR2RGB),
                 caption="Blurred Image")
     if Blur_img is not None:
