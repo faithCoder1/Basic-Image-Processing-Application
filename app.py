@@ -168,7 +168,7 @@ if uploaded_file is not None:
                     mime=mime
                 )
         st.header(' Blur my image using Gaussian Blur')
-        ksize = st.slider("Kernel Size", 1, 21, 5, step=2)
+        ksize = st.slider("Kernel Size", 1, 101, 5, step=2)
         Blur_img = cv.GaussianBlur(cv_image, (ksize, ksize), 0)
         st.image(cv.cvtColor(Blur_img, cv.COLOR_BGR2RGB),
                     caption="Blurred Image")
