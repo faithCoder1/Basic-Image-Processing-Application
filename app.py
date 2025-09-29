@@ -1,5 +1,6 @@
 import time  # to simulate a real time data, time loop
 import joblib as jb
+from PIL import Image
 import numpy as np  # np mean, np random
 import pandas as pd  # read csv, df manipulation
 import plotly.express as px  # interactive charts
