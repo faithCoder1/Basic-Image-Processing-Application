@@ -94,7 +94,7 @@ if uploaded_file is not None:
                 file_name=f"Blur_img{ext}",
                 mime=mime
             )
-    st.subheader(Apply white background')
+    st.subheader('Apply white background')
     no_bg = remove(cv_image)
 
     # Create white background
