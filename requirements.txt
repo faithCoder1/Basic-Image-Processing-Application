@@ -1,5 +1,6 @@
 pip>=21.0.1
 pillow>=8.2.0
+onnxruntime>=1.19.2
 rembg>=2.0.61
 numpy>=1.24.4
 pandas>=2.0.3
