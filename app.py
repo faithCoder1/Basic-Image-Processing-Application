@@ -14,7 +14,6 @@ st.set_page_config(
     layout="wide",
 )
 st.header('Perform Basic Image processing on Your Image') 
-choice = st.radio("Choose an option:", ["Upload Image", "Take Photo"])
 
 uploaded_file = st.file_uploader("Choose a file", type=["jpg", "jpeg", "png"])
 if uploaded_file is not None:
