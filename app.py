@@ -16,156 +16,78 @@ st.set_page_config(
 st.header('Perform Basic Image processing on Your Image') 
 choice = st.radio("Choose an option:", ["Upload Image", "Take Photo"])
 
+uploaded_file = st.file_uploader("Choose a file", type=["jpg", "jpeg", "png"])
+if uploaded_file is not None:
+# Convert the uploaded file to a numpy array
+    file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
 
-if choice == "Upload Image":
-    uploaded_file = st.file_uploader("Choose a file", type=["jpg", "jpeg", "png"])
-    if uploaded_file is not None:
-    # Convert the uploaded file to a numpy array
-        file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+    # Decode the image as OpenCV format
+    cv_image = cv.imdecode(file_bytes, cv.IMREAD_COLOR)
+    with st.form("example_form"):
+        height  = st.number_input("height",min_value=100, key="height")
+        width = st.number_input("width", min_value=100, key="width")
+        submit = st.form_submit_button("Done")
+    cv_image=cv.resize(cv_image,(height,width))
+    # Display with Streamlit (convert BGR to RGB for correct colors)
+    st.subheader("uploaded Image")
+    st.image(cv.cvtColor(cv_image, cv.COLOR_BGR2RGB), channels="RGB") 
+    st.header('Perform Canny Edge Detection') 
+    t1 = st.slider("Threshold1", 50, 200, 100)
+    t2 = st.slider("Threshold2", 50, 300, 200)
+    edges = cv.Canny(cv_image,t1,t2)
+    edges=cv.resize(edges,(height,width))
+    st.image(edges, use_column_width=True)
 
-        # Decode the image as OpenCV format
-        cv_image = cv.imdecode(file_bytes, cv.IMREAD_COLOR)
-        with st.form("example_form"):
-            height  = st.number_input("height",min_value=100, key="height")
-            width = st.number_input("width", min_value=100, key="width")
-            submit = st.form_submit_button("Done")
-        cv_image=cv.resize(cv_image,(height,width))
-        # Display with Streamlit (convert BGR to RGB for correct colors)
-        st.subheader("uploaded Image")
-        st.image(cv.cvtColor(cv_image, cv.COLOR_BGR2RGB), channels="RGB") 
-        st.header('Perform Canny Edge Detection') 
-        t1 = st.slider("Threshold1", 50, 200, 100)
-        t2 = st.slider("Threshold2", 50, 300, 200)
-        edges = cv.Canny(cv_image,t1,t2)
-        edges=cv.resize(edges,(height,width))
-        st.image(edges, use_column_width=True)
+    if edges is not None:
+        download_format = st.radio(
+            "Choose download format:",
+            ("PNG", "JPEG"),key="canny_radio" 
+        )
 
-        if edges is not None:
-            download_format = st.radio(
-                "Choose download format:",
-                ("PNG", "JPEG"),key="canny_radio" 
+        # Select correct extension and MIME type
+    if download_format == "PNG":
+        ext = ".png"
+        mime = "image/png"
+    else:
+        ext = ".jpg"
+        mime = "image/jpeg"
+
+        # Encode to chosen format
+    is_success, buffer = cv.imencode(ext, edges)
+
+    if is_success:
+        st.download_button(
+                label=f"Download as {download_format}",
+                data=buffer.tobytes(),
+                file_name=f"processed_image{ext}",
+                mime=mime
             )
+    st.header(' Blur my image using Gaussian Blur')
+    ksize = st.slider("Kernel Size", 1, 21, 5, step=2)
+    Blur_img = cv.GaussianBlur(cv_image, (ksize, ksize), 0)
+    st.image(cv.cvtColor(Blur_img, cv.COLOR_BGR2RGB),
+                caption="Blurred Image", use_column_width=True)
+    if Blur_img is not None:
+        download_form = st.radio(
+            "Choose download format:",
+            ("PNG", "JPEG"),key="Blur_radio" 
+        )
 
-            # Select correct extension and MIME type
-        if download_format == "PNG":
-            ext = ".png"
-            mime = "image/png"
-        else:
-            ext = ".jpg"
-            mime = "image/jpeg"
+        # Select correct extension and MIME type
+    if download_form == "PNG":
+        ext = ".png"
+        mime = "image/png"
+    else:
+        ext = ".jpg"
+        mime = "image/jpeg"
 
-            # Encode to chosen format
-        is_success, buffer = cv.imencode(ext, edges)
+        # Encode to chosen format
+    success, buff = cv.imencode(ext, Blur_img)
 
-        if is_success:
-            st.download_button(
-                    label=f"Download as {download_format}",
-                    data=buffer.tobytes(),
-                    file_name=f"processed_image{ext}",
-                    mime=mime
-                )
-        st.header(' Blur my image using Gaussian Blur')
-        ksize = st.slider("Kernel Size", 1, 21, 5, step=2)
-        Blur_img = cv.GaussianBlur(cv_image, (ksize, ksize), 0)
-        st.image(cv.cvtColor(Blur_img, cv.COLOR_BGR2RGB),
-                    caption="Blurred Image", use_column_width=True)
-        if Blur_img is not None:
-            download_form = st.radio(
-                "Choose download format:",
-                ("PNG", "JPEG"),key="Blur_radio" 
+    if success:
+        st.download_button(
+                label=f"Download as {download_form}",
+                data=buff.tobytes(),
+                file_name=f"processed_image{ext}",
+                mime=mime
             )
-
-            # Select correct extension and MIME type
-        if download_form == "PNG":
-            ext = ".png"
-            mime = "image/png"
-        else:
-            ext = ".jpg"
-            mime = "image/jpeg"
-
-            # Encode to chosen format
-        success, buff = cv.imencode(ext, Blur_img)
-
-        if success:
-            st.download_button(
-                    label=f"Download as {download_form}",
-                    data=buff.tobytes(),
-                    file_name=f"processed_image{ext}",
-                    mime=mime
-                )
-    elif choice == "Take Photo":
-        picture = st.camera_input("Take a picture")
-        if picture is not None:
-    # Convert the uploaded file to a numpy array
-            file_bytes = np.asarray(bytearray(picture.read()), dtype=np.uint8)
-
-            # Decode the image as OpenCV format
-            cv_image = cv.imdecode(file_bytes, cv.IMREAD_COLOR)
-            with st.form("example_form"):
-                height  = st.number_input("height",min_value=100, key="height")
-                width = st.number_input("width", min_value=100, key="width")
-                submit = st.form_submit_button("Done")
-            cv_image=cv.resize(cv_image,(height,width))
-            # Display with Streamlit (convert BGR to RGB for correct colors)
-            st.subheader("Captured Image")
-            st.image(cv.cvtColor(cv_image, cv.COLOR_BGR2RGB), channels="RGB") 
-            st.header('Perform Canny Edge Detection') 
-            t1 = st.slider("Threshold1", 50, 200, 100)
-            t2 = st.slider("Threshold2", 50, 300, 200)
-            edges = cv.Canny(cv_image,t1,t2)
-            edges=cv.resize(edges,(height,width))
-            st.image(edges, use_column_width=True)
-
-            if edges is not None:
-                download_format = st.radio(
-                    "Choose download format:",
-                    ("PNG", "JPEG"),key="canny_radio1" 
-                )
-
-                # Select correct extension and MIME type
-            if download_format == "PNG":
-                ext = ".png"
-                mime = "image/png"
-            else:
-                ext = ".jpg"
-                mime = "image/jpeg"
-
-                # Encode to chosen format
-            is_success1, buffer1 = cv.imencode(ext, edges)
-
-            if is_success1:
-                st.download_button(
-                        label=f"Download as {download_format}",
-                        data=buffer1.tobytes(),
-                        file_name=f"processed_image{ext}",
-                        mime=mime
-                    )
-            st.header(' Blur my image using Gaussian Blur')
-            ksize = st.slider("Kernel Size", 1, 21, 5, step=2)
-            Blur_img = cv.GaussianBlur(cv_image, (ksize, ksize), 0)
-            st.image(cv.cvtColor(Blur_img, cv.COLOR_BGR2RGB),
-                        caption="Blurred Image", use_column_width=True)
-            if Blur_img is not None:
-                download_form = st.radio(
-                    "Choose download format:",
-                    ("PNG", "JPEG"),key="Blur_radio1" 
-                )
-
-                # Select correct extension and MIME type
-            if download_form == "PNG":
-                ext = ".png"
-                mime = "image/png"
-            else:
-                ext = ".jpg"
-                mime = "image/jpeg"
-
-                # Encode to chosen format
-            success1, buff1 = cv.imencode(ext, Blur_img)
-
-            if success1:
-                st.download_button(
-                        label=f"Download as {download_form}",
-                        data=buff1.tobytes(),
-                        file_name=f"processed_image{ext}",
-                        mime=mime
-                    )
