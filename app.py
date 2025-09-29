@@ -55,7 +55,7 @@ if choice == "Upload Image":
             mime = "image/jpeg"
 
             # Encode to chosen format
-        is_success, buffer = cv.imencode(ext, cv_image)
+        is_success, buffer = cv.imencode(ext, edges)
 
         if is_success:
             st.download_button(
@@ -131,12 +131,12 @@ if choice == "Upload Image":
                 mime = "image/jpeg"
 
                 # Encode to chosen format
-            is_success, buffer = cv.imencode(ext, edges)
+            is_success1, buffer1 = cv.imencode(ext, edges)
 
-            if is_success:
+            if is_success1:
                 st.download_button(
                         label=f"Download as {download_format}",
-                        data=buffer.tobytes(),
+                        data=buffer1.tobytes(),
                         file_name=f"processed_image{ext}",
                         mime=mime
                     )
@@ -160,12 +160,12 @@ if choice == "Upload Image":
                 mime = "image/jpeg"
 
                 # Encode to chosen format
-            success, buff = cv.imencode(ext, Blur_img)
+            success1, buff1 = cv.imencode(ext, Blur_img)
 
-            if success:
+            if success1:
                 st.download_button(
                         label=f"Download as {download_form}",
-                        data=buff.tobytes(),
+                        data=buff1.tobytes(),
                         file_name=f"processed_image{ext}",
                         mime=mime
                     )
