@@ -35,7 +35,7 @@ if uploaded_file is not None:
     t2 = st.slider("Threshold2", 50, 300, 200)
     edges = cv.Canny(cv_image,t1,t2)
     edges=cv.resize(edges,(height,width))
-    st.image(edges, use_column_width=True)
+    st.image(edges)
 
     if edges is not None:
         download_format = st.radio(
@@ -65,7 +65,7 @@ if uploaded_file is not None:
     ksize = st.slider("Kernel Size", 1, 21, 5, step=2)
     Blur_img = cv.GaussianBlur(cv_image, (ksize, ksize), 0)
     st.image(cv.cvtColor(Blur_img, cv.COLOR_BGR2RGB),
-                caption="Blurred Image", use_column_width=True)
+                caption="Blurred Image")
     if Blur_img is not None:
         download_form = st.radio(
             "Choose download format:",
@@ -87,6 +87,6 @@ if uploaded_file is not None:
         st.download_button(
                 label=f"Download as {download_form}",
                 data=buff.tobytes(),
-                file_name=f"processed_image{ext}",
+                file_name=f"Blur_img{ext}",
                 mime=mime
             )
