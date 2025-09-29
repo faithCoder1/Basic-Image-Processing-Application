@@ -94,37 +94,37 @@ if uploaded_file is not None:
                 file_name=f"Blur_img{ext}",
                 mime=mime
             )
-    st.subheader('Apply white background')
-    no_bg = remove(cv_image)
+    # st.subheader('Apply white background')
+    # no_bg = remove(cv_image)
 
-    # Create white background
-    white_bg = Image.new("RGB", no_bg.shape, (255, 255, 255))  
-    white_bg.paste(no_bg, (0, 0), no_bg)
-    white_bg=cv.resize(white_bg,(height,width))
-    st.image(white_bg, caption="Processed")
-    if white_bg is not None:
-        download_form = st.radio(
-            "Choose download format:",
-            ("PNG", "JPEG"),key="white_radio" 
-        )
+    # # Create white background
+    # white_bg = Image.new("RGB", no_bg.shape, (255, 255, 255))  
+    # white_bg.paste(no_bg, (0, 0), no_bg)
+    # white_bg=cv.resize(white_bg,(height,width))
+    # st.image(white_bg, caption="Processed")
+    # if white_bg is not None:
+    #     download_form = st.radio(
+    #         "Choose download format:",
+    #         ("PNG", "JPEG"),key="white_radio" 
+    #     )
 
-        # Select correct extension and MIME type
-    if download_for == "PNG":
-        ext = ".png"
-        mime = "image/png"
-    else:
-        ext = ".jpg"
-        mime = "image/jpeg"
+    #     # Select correct extension and MIME type
+    # if download_for == "PNG":
+    #     ext = ".png"
+    #     mime = "image/png"
+    # else:
+    #     ext = ".jpg"
+    #     mime = "image/jpeg"
 
-        # Encode to chosen format
-    succes, buf = cv.imencode(ext, white_bg)
+    #     # Encode to chosen format
+    # succes, buf = cv.imencode(ext, white_bg)
 
-    if succes:
-        st.download_button(
-                label=f"Download as {download_form}",
-                data=buf.tobytes(),
-                file_name=f"WhiteBackground{ext}",
-                mime=mime
-            )
+    # if succes:
+    #     st.download_button(
+    #             label=f"Download as {download_form}",
+    #             data=buf.tobytes(),
+    #             file_name=f"WhiteBackground{ext}",
+    #             mime=mime
+    #         )
     
     
