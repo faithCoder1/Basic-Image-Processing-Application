@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import cv2 as cv
 import streamlit as st
 from tempfile import NamedTemporaryFile
+from rembg import remove
 st.set_page_config(
     page_title="Image processing V1.0", 
     page_icon="✅",
@@ -92,3 +93,11 @@ if uploaded_file is not None:
                 file_name=f"Blur_img{ext}",
                 mime=mime
             )
+    st.subheader('apply white background')
+    no_bg = remove(input_img)
+
+    # Create white background
+    white_bg = Image.new("RGB", no_bg.size, (255, 255, 255))  
+    white_bg.paste(no_bg, (0, 0), no_bg)
+    st.image(white_bg, caption="Processed")
+    
