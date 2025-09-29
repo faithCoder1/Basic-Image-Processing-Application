@@ -25,14 +25,15 @@ if uploaded_file is not None:
     # Decode the image as OpenCV format
     cv_image = cv.imdecode(file_bytes, cv.IMREAD_COLOR)
     # with st.form("example_form"):
-    choice = st.radio("Do you want to work with a Resized Image?", ["No", "Yes"])
+    st.subheader(""Do you want to work with a Resized Image?",")
+    choice = st.radio("", ["No", "Yes"])
     if choice=='Yes':
         height  = st.number_input("height",min_value=100, key="height")
         width = st.number_input("width", min_value=100, key="width")
     # submit = st.form_submit_button("Done")
         cv_image1=cv.resize(cv_image,(height,width))
-        st.image(cv.cvtColor(cv_image1, cv.COLOR_BGR2RGB), channels="RGB") 
-        st.subheader("uploaded Image")
+        st.image(cv.cvtColor(cv_image1, cv.COLOR_BGR2RGB), channels="RGB", caption="Upload Successful") 
+        
         
         st.header('Perform Canny Edge Detection') 
         t1 = st.slider("Threshold1", 50, 200, 100)
