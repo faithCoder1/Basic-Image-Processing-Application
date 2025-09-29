@@ -9,7 +9,7 @@ import cv2 as cv
 import streamlit as st
 from tempfile import NamedTemporaryFile
 st.set_page_config(
-    page_title="Canny Edge Detection", 
+    page_title="Image processing V1.0", 
     page_icon="✅",
     layout="wide",
 )
@@ -119,7 +119,7 @@ if choice == "Upload Image":
             if edges is not None:
                 download_format = st.radio(
                     "Choose download format:",
-                    ("PNG", "JPEG"),key="canny_radio" 
+                    ("PNG", "JPEG"),key="canny_radio1" 
                 )
 
                 # Select correct extension and MIME type
@@ -131,7 +131,7 @@ if choice == "Upload Image":
                 mime = "image/jpeg"
 
                 # Encode to chosen format
-            is_success, buffer = cv.imencode(ext, cv_image)
+            is_success, buffer = cv.imencode(ext, edges)
 
             if is_success:
                 st.download_button(
@@ -148,7 +148,7 @@ if choice == "Upload Image":
             if Blur_img is not None:
                 download_form = st.radio(
                     "Choose download format:",
-                    ("PNG", "JPEG"),key="Blur_radio" 
+                    ("PNG", "JPEG"),key="Blur_radio1" 
                 )
 
                 # Select correct extension and MIME type
