@@ -25,7 +25,7 @@ if uploaded_file is not None:
     # Decode the image as OpenCV format
     cv_image = cv.imdecode(file_bytes, cv.IMREAD_COLOR)
     # with st.form("example_form"):
-    st.subheader(""Do you want to work with a Resized Image?",")
+    st.subheader("Do you want to work with a Resized Image?")
     choice = st.radio("", ["No", "Yes"])
     if choice=='Yes':
         height  = st.number_input("height",min_value=100, key="height")
