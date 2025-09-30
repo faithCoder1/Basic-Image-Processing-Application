@@ -101,7 +101,7 @@ if uploaded_file is not None:
         minLineLength = st.slider("Minimum line length", 10, 500, 2)
         threshold1 = st.slider("Set threshold", 1, 101, 5, step=2)                        
         maxLineGap = st.slider("Maximum Line Gap", 1, 20, 5, step=1)                        
-        lines = cv.HoughLinesP(edges,1,np.pi/180,threshold,minLineLength=minLineLength,maxLineGap=maxLineGap)
+        lines = cv.HoughLinesP(edges,1,np.pi/180,threshold1,minLineLength=minLineLength,maxLineGap=maxLineGap)
         for line in lines:
             x1,y1,x2,y2 = line[0]
             cv.line(cv_image,(x1,y1),(x2,y2),(255,0,0),2)
@@ -211,7 +211,7 @@ if uploaded_file is not None:
         minLineLength = st.slider("Minimum line length", 10, 500, 2)
         threshold1 = st.slider("Set threshold", 1, 101, 5, step=2)                        
         maxLineGap = st.slider("Maximum Line Gap", 1, 20, 5, step=1)                        
-        lines = cv.HoughLinesP(edges,1,np.pi/180,threshold,minLineLength=minLineLength,maxLineGap=maxLineGap)
+        lines = cv.HoughLinesP(edges,1,np.pi/180,threshold1,minLineLength=minLineLength,maxLineGap=maxLineGap)
         for line in lines:
             x1,y1,x2,y2 = line[0]
             cv.line(cv_image,(x1,y1),(x2,y2),(255,0,0),2)
