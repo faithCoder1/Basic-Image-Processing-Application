@@ -97,6 +97,15 @@ if uploaded_file is not None:
                     file_name=f"Blur_img{ext}",
                     mime=mime
                 )
+        st.subheader('Detect Straight LInes')
+        minLineLength = st.slider("Minimum line length", 10, 500, 2)
+        threshold1 = st.slider("Set threshold", 1, 101, 5, step=2)                        
+        maxLineGap = st.slider("Maximum Line Gap", 1, 20, 5, step=1)                        
+        lines = cv.HoughLinesP(edges,1,np.pi/180,threshold,minLineLength=minLineLength,maxLineGap=maxLineGap)
+        for line in lines:
+            x1,y1,x2,y2 = line[0]
+            cv.line(cv_image,(x1,y1),(x2,y2),(255,0,0),2)
+        st.image(cv_image)
         # st.subheader('Apply white background')
         # no_bg = remove(cv_image)
     
@@ -196,7 +205,7 @@ if uploaded_file is not None:
                     file_name=f"Blur_img{ext}",
                     mime=mime
                 )
-        gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+        
 
         st.subheader('Detect Straight LInes')
         minLineLength = st.slider("Minimum line length", 10, 500, 2)
